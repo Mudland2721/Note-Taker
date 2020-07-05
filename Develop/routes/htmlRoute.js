@@ -1,16 +1,18 @@
   const path = require("path");
 
-module.exports = function (app) {
-        app.get("/", function(req, res) {
-            //  console.log(__dirname);
-        res.sendFile(path.join(__dirname + '/Develop/public/index.html'));
+  module.exports = function (router){
+
+    router.get("/", function(req, res) {
+             console.log(__dirname);
+        res.sendFile(path.join(__dirname + '../public/index.html'));
          });
 
-        app.get("/notes", function(req,res) {
-            res.sendFile(path.join(__dirname,"/Develop/notes.html"));
+         router.get("/notes", function(req,res) {
+            console.log('--- HIT /notes route!!! ----')
+            res.sendFile(path.join(__dirname,"../public/notes.html"));
         });
 
-        app.get("*", function(req,res) {
-            res.sendFile(path.join(__dirname, "/Develop/index.html"));
+        router.get("*", function(req,res) {
+            res.sendFile(path.join(__dirname, "../public/index.html"));
         });
-};
+    };

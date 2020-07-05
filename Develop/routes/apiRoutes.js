@@ -1,13 +1,14 @@
-const app = express();
 const fs = require("fs");
-const madeNote = require("../db/db.json");
+const madeNote = require("../db/db");
+
+module.exports = function (router){
 //api routes 
-app.get("/api/notes", function(req,res) {
+router.get("/api/notes", function(req,res) {
     console.log("Note Saved");
     return res.json(madeNote);
 });
 
-app.post("/api/notes", function(req, res) {
+router.post("/api/notes", function(req, res) {
     let newNote = req.body;
     let currNote = JSON.stringify(newNote);
     if (newNote === " ") {
@@ -17,17 +18,17 @@ app.post("/api/notes", function(req, res) {
     }
     madeNote.push(newNote);
 
-    fs.writeFile("../db/db.json", function(err) {
+    fs.writeFile("db/db.json", currNote, function(err) {
         if (err) throw err;
         console.log("New Note Created")
         res.send()
     })
 })
 
-app.delete("/api/notes/:id", function(req, body) {
+router.delete("/api/notes/:id", function(req, body) {
     let erase = req.body.id;
-    madeNote.splice(erase, 1);
-    if (madeNote.length === 0 || madeNote === undefined || madeNote === null) {
+    madeNote.splice(erase, 0);
+    if (!madeNote.length === 0 || !madeNote === undefined) {
         for (let i = 0; i < madeNote.length; i++) {
             madeNote[i].id = i;
         }
@@ -38,3 +39,4 @@ app.delete("/api/notes/:id", function(req, body) {
         res.send();
     })
 })
+};
